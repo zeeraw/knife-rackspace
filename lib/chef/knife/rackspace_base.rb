@@ -1,6 +1,6 @@
 #
 # Author:: Seth Chisamore (<schisamo@opscode.com>)
-# Copyright:: Copyright (c) 2011 Opscode, Inc.
+# Copyright:: Copyright (c) 2011-2012 Opscode, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -74,9 +74,9 @@ class Chef
       def private_ip_addr(server)
         @private_ip_addr ||= begin
           server.addresses["private"][0]
-        end	  
+        end
       end
-	  
+
       def public_dns_name(server)
         @public_dns_name ||= begin
           Resolv.getname(server.addresses["public"][0])

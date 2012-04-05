@@ -1,6 +1,6 @@
 #
 # Author:: Adam Jacob (<adam@opscode.com>)
-# Copyright:: Copyright (c) 2009 Opscode, Inc.
+# Copyright:: Copyright (c) 2009-2012 Opscode, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -108,13 +108,13 @@ class Chef
         :description => "JSON string version of metadata hash to be supplied with the server create call",
         :proc => Proc.new { |m| Chef::Config[:knife][:rackspace_metadata] = JSON.parse(m) },
         :default => ""
-		
+
       option :ssh_network,
-	    :short => "-n NETWORK",
-	    :long => "--network NETWORK",
-	    :description => "Choose private or public network of server for bootstrap to connect to; default is 'public'",
-	    :proc => Proc.new { |n| Chef::Config[:knife][:ssh_network] = n },
-	    :default => "public"
+	      :short => "-n NETWORK",
+	      :long => "--network NETWORK",
+	      :description => "Choose 'private' or 'public' network of server for bootstrap to connect to; default is 'public'",
+	      :proc => Proc.new { |n| Chef::Config[:knife][:ssh_network] = n },
+	      :default => "public"
 
       def tcp_test_ssh(hostname)
         tcp_socket = TCPSocket.new(hostname, 22)
@@ -177,7 +177,7 @@ class Chef
         print "\n#{ui.color("Waiting for sshd", :magenta)}"
 
         if Chef::Config[:knife][:ssh_network] == "private"
-           print(".") until tcp_test_ssh(server.addresses["private"][0]) { sleep @initial_sleep_delay ||= 10; puts("done") }	
+           print(".") until tcp_test_ssh(server.addresses["private"][0]) { sleep @initial_sleep_delay ||= 10; puts("done") }
         else
            print(".") until tcp_test_ssh(server.addresses["public"][0]) { sleep @initial_sleep_delay ||= 10; puts("done") }
         end
@@ -201,8 +201,8 @@ class Chef
 
       def bootstrap_for_node(server)
         bootstrap = Chef::Knife::Bootstrap.new
-        
-        if Chef::Config[:knife][:ssh_network] == "private"  
+
+        if Chef::Config[:knife][:ssh_network] == "private"
             bootstrap.name_args = [private_ip_addr(server)]
         else
             bootstrap.name_args = [public_dns_name(server)]

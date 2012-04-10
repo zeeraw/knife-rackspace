@@ -36,23 +36,23 @@ class Chef
             require 'chef/json_compat'
           end
 
+          option :rackspace_api_key,
+            :short => "-K KEY",
+            :long => "--rackspace-api-key KEY",
+            :description => "Your Rackspace API key",
+            :proc => Proc.new { |key| Chef::Config[:knife][:rackspace_api_key] = key }
+
           option :rackspace_username,
             :short => "-A USERNAME",
             :long => "--rackspace-username USERNAME",
-            :description => "Your Rackspace username",
+            :description => "Your Rackspace API username",
             :proc => Proc.new { |username| Chef::Config[:knife][:rackspace_username] = username }
 
-          option :rackspace_password,
-            :short => "-P PASSWORD",
-            :long => "--rackspace-password PASSWORD",
-            :description => "Your Rackspace password",
-            :proc => Proc.new { |password| Chef::Config[:knife][:rackspace_password] = password }
-
-          option :rackspace_auth_url,
-            :long => "--rackspace-auth-url URL",
-            :description => "Your Rackspace auth url",
+          option :rackspace_api_auth_url,
+            :long => "--rackspace-api-auth-url URL",
+            :description => "Your Rackspace API auth url",
             :default => "https://identity.api.rackspacecloud.com/v2.0/tokens",
-            :proc => Proc.new { |url| Chef::Config[:knife][:rackspace_auth_url] = url }
+            :proc => Proc.new { |url| Chef::Config[:knife][:rackspace_api_auth_url] = url }
         end
       end
 
@@ -60,9 +60,9 @@ class Chef
         @connection ||= begin
           connection = Fog::Compute.new(
             :provider => 'OSRackspace',
-            :rackspace_username => Chef::Config[:knife][:rackspace_username] || Chef::Config[:knife][:rackspace_username],
-            :rackspace_password => Chef::Config[:knife][:rackspace_password] || Chef::Config[:knife][:rackspace_password],
-            :rackspace_auth_url => Chef::Config[:knife][:rackspace_auth_url] || config[:rackspace_auth_url]
+            :rackspace_api_key => Chef::Config[:knife][:rackspace_api_key],
+            :rackspace_username => Chef::Config[:knife][:rackspace_api_username] || Chef::Config[:knife][:rackspace_username],
+            :rackspace_auth_url => Chef::Config[:knife][:rackspace_api_auth_url] || Chef::Config[:knife][:rackspace_auth_url]
           )
         end
       end

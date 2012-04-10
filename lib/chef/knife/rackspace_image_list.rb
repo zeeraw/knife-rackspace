@@ -1,6 +1,7 @@
 #
 # Author:: Seth Chisamore (<schisamo@opscode.com>)
-# Copyright:: Copyright (c) 2011 Opscode, Inc.
+# Author:: Matt Ray (<matt@opscode.com>)
+# Copyright:: Copyright (c) 2011-2012 Opscode, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,16 +29,24 @@ class Chef
 
       def run
         image_list = [
-          ui.color('ID', :bold),
-          ui.color('Name', :bold)
+          ui.color('Name', :bold),
+          ui.color('Arch', :bold),
+          ui.color('OS Type', :bold),
+          ui.color('Distro', :bold),
+          ui.color('Version', :bold),
+          ui.color('Created', :bold)
         ]
 
         connection.images.sort_by(&:name).each do |image|
-          image_list << image.id.to_s
           image_list << image.name
+          image_list << image.metadata_value('arch')
+          image_list << image.metadata_value('os_type')
+          image_list << image.metadata_value('os_distro')
+          image_list << image.metadata_value('os_version')
+          image_list << image.created_at
         end
 
-        puts ui.list(image_list, :columns_across, 2)
+        puts ui.list(image_list, :columns_across, 6)
       end
     end
   end

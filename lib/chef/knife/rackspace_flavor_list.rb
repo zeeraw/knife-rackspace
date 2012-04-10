@@ -1,5 +1,6 @@
 #
 # Author:: Seth Chisamore (<schisamo@opscode.com>)
+# Author:: Matt Ray (<matt@opscode.com>)
 # Copyright:: Copyright (c) 2011-2012 Opscode, Inc.
 # License:: Apache License, Version 2.0
 #
@@ -30,18 +31,16 @@ class Chef
         flavor_list = [
           ui.color('ID', :bold),
           ui.color('Name', :bold),
-          ui.color('Architecture', :bold),
           ui.color('RAM', :bold),
           ui.color('Disk', :bold)
         ]
         connection.flavors.sort_by(&:id).each do |flavor|
           flavor_list << flavor.id.to_s
           flavor_list << flavor.name
-          flavor_list << "#{flavor.bits.to_s}-bit"
           flavor_list << "#{flavor.ram.to_s}"
           flavor_list << "#{flavor.disk.to_s} GB"
         end
-        puts ui.list(flavor_list, :columns_across, 5)
+        puts ui.list(flavor_list, :columns_across, 4)
       end
     end
   end
